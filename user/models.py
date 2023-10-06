@@ -5,7 +5,7 @@ from django.contrib.auth.models import (
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, nickname, mbti, blog, password=None):
+    def create_user(self, email, nickname, profile, mbti, blog, password=None):
         if not email:
             raise ValueError('Users must have an email address')
         if not nickname:
@@ -15,19 +15,21 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             nickname = nickname,
             mbti = mbti,
-            blog = blog
+            blog = blog,
+            profile = profile
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, nickname, mbti, blog, password=None):
+    def create_superuser(self, email, nickname, profile, mbti, blog, password=None):
         user = self.create_user(
             email,
             nickname,
             mbti,
             blog,
+            profile,
             password = password,
         )
         user.is_admin = True
@@ -42,14 +44,16 @@ class User(AbstractBaseUser):
         unique=True,
     )
     nickname = models.CharField(max_length=100, unique=True)
-    is_admin = models.BooleanField(default=False)
     mbti = models.CharField(max_length=100, null=True, blank=True)
     blog = models.CharField(max_length=100, null=True, blank=True)
-
+    profile = models.ImageField(blank=True, upload_to='%Y/%m/')
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+    
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nickname', 'mbti', 'blog']
+    REQUIRED_FIELDS = ['nickname', 'profile', 'mbti', 'blog']
 
 
     def __str__(self):
