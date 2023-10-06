@@ -16,5 +16,11 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-        
-        
+
+# 로그인         
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['nickname'] = user.nickname
+        return token
