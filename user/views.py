@@ -15,10 +15,13 @@ class UserView(APIView):
             serializer.save()
             print(serializer['email'])
             return Response({"message":"가입완료!"}, status=status.HTTP_201_CREATED)
+        elif 'nickname' in serializer.errors and 'email' in serializer.errors:
+            return Response({"message":"이미 가입되어 있는 이메일, 닉네임입니다"}, status=status.HTTP_409_CONFLICT)
         elif 'email' in serializer.errors :
             return Response({"message":"이미 가입되어 있는 이메일입니다"}, status=status.HTTP_409_CONFLICT)
         elif 'nickname' in serializer.errors :
             return Response({"message":"이미 가입되어 있는 닉네임입니다"}, status=status.HTTP_409_CONFLICT)
+    
         else :
             return Response({"message":f"$({serializer.errors})"}, status=status.HTTP_400_BAD_REQUEST)
 
