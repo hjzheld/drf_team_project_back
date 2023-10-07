@@ -12,19 +12,24 @@ class ArticleView(APIView):
         return Response(serializers.data, status=status.HTTP_200_OK )
     
     def post(self, request):
-        serializer = ArticleCreateSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+        user = request.user
+
+        Serializer = ArticleSerializer(data=request.data)
+        Serializer.is_valid(raise_exception=True)
+        Serializer.save(author=user)
 
 class ArticleDetailView(APIView):
     def get(self, request, article_id):
-        pass
+        article = Article.objects.all()
+        serializers = ArticleSerializer(article, many=True)
+        return Response(serializers.data, status=status.HTTP_200_OK )
 
     def put(self, request, article_id):
-        pass
+        article = Article.objects.get(author=request.user)
+
+        Serializer = ArticleSerializer(article, data=request.data)
+        Serializer.is_valid(raise_exception=True)
+        Serializer.save()
 
     def delete(self, request, article_id):
         pass

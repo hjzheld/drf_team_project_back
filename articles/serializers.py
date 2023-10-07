@@ -10,7 +10,6 @@ class ArticleSerializer(serializers.ModelSerializer):
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class meta:
         model = Article
-        fields = 'tItle'
 
 class ArticleListSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
