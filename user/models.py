@@ -43,6 +43,8 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
+    followings = models.ManyToManyField(
+        'self', symmetrical=False, related_name='followers', blank=True)
     last_login = models.DateTimeField(
         auto_now=True, blank=True, null=True, verbose_name='last login')
     nickname = models.CharField(max_length=100, unique=True)

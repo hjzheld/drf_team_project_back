@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.generics import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from .serializers import UserSerializer
@@ -44,3 +45,15 @@ class UserProfileView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response('권한이 없습니다!', status=status.HTTP_403_FORBIDDEN)
+
+# 팔로우 
+class FollowView(APIView):
+    def post(self, request, user_id):
+        you = get_object_or_404(User, id=user_id)
+        me = request.user
+        if me in you.followers.all():
+            you.followers.remove(me)
+            return Response('팔로우 취소', status=status.HTTP_200_OK)
+        else:
+            you.followers.add(me)
+            return Response('팔로우 완료', status=status.HTTP_200_OK)
