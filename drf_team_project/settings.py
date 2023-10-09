@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'user',
     'articles',
+    'comment',
 ]
 
 REST_FRAMEWORK = {
