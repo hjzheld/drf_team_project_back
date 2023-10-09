@@ -5,9 +5,13 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 # 프로필 조회
 class UserProfileSerializer(serializers.ModelSerializer):
+    followers = serializers.StringRelatedField(many=True)
+    followings = serializers.StringRelatedField(many=True)
+    
+    
     class Meta:
         model = User
-        fields = ['email', 'nickname', 'profile', 'mbti', 'blog']
+        fields = ['email', 'nickname', 'profile', 'mbti', 'blog', "followings", "followers"]
 
 
 class UserSerializer(serializers.ModelSerializer):
