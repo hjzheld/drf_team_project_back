@@ -43,6 +43,8 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
+    last_login = models.DateTimeField(
+        auto_now=True, blank=True, null=True, verbose_name='last login')
     nickname = models.CharField(max_length=100, unique=True)
     mbti = models.CharField(max_length=100, null=True, blank=True)
     blog = models.CharField(max_length=100, null=True, blank=True)
