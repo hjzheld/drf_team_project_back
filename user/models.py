@@ -53,6 +53,8 @@ class User(AbstractBaseUser):
     profile = models.ImageField(blank=True, upload_to='%Y/%m/')
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+
+    tag_ids = models.ManyToManyField('tag.Tag', related_name='user_tag')
     
     objects = UserManager()
 
