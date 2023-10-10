@@ -17,6 +17,9 @@ class ArticleListSerializer(serializers.ModelSerializer):
 
     def get_user(self, obj):
         return obj.user.email
-    class meta:
+    
+    class Meta:
         model = Article
-        fields = ('pk', 'title', 'image', 'update_at', 'user')
+        fields = ('pk', 'title', 'content', 'image', 'updated_at', 'user')
+        
+        
