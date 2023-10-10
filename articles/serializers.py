@@ -5,7 +5,6 @@ from comment.models import Comment
 from comment.serializers import CommentSerializer
 
 class ArticleSerializer(serializers.ModelSerializer):
-    comments =serializers.SerializerMethodField()
     class Meta:
         model = Article
         fields = '__all__'
