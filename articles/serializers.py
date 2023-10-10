@@ -5,6 +5,7 @@ from comment.models import Comment
 from comment.serializers import CommentSerializer
 
 class ArticleSerializer(serializers.ModelSerializer):
+    comments =serializers.SerializerMethodField()
     class Meta:
         model = Article
         fields = '__all__'
@@ -12,7 +13,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ('title', 'content', 'image',)
+        fields = ('title', 'content', 'image', 'tag_id')
 
 class ArticleListSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
@@ -23,6 +24,6 @@ class ArticleListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Article
-        fields = ('pk', 'title', 'content', 'image', 'updated_at', 'user', 'comments')
+        fields = ('pk', 'title', 'content', 'image', 'updated_at', 'user', 'comments', 'tag_id')
         
         
