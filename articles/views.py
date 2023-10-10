@@ -27,7 +27,7 @@ class ArticleView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ArticleDetailView(APIView):
-    def get(self, request, article_id):
+    def get(self, article_id):
         article = get_object_or_404(Article, id=article_id)
         serializers = ArticleListSerializer(article)
         return Response(serializers.data, status=status.HTTP_200_OK)

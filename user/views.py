@@ -1,7 +1,10 @@
 from rest_framework.views import APIView
-from rest_framework.generics import get_object_or_404
+from django.shortcuts import get_list_or_404
 from rest_framework import status
 from rest_framework.response import Response
+from articles.models import Article
+
+from articles.serializers import ArticleListSerializer
 from .serializers import UserSerializer
 from rest_framework import permissions
 from rest_framework_simplejwt.views import (
@@ -32,6 +35,12 @@ class UserView(APIView):
 #로그인
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+class UserArticleView(APIView):
+    def get(self, request, user_id):
+        article = get_list_or_404(Article, user=user_id)
+        serializers = ArticleListSerializer(article, many=True)
+        return Response(serializers.data, status=status.HTTP_200_OK)
 
 
 # 본인 프로필, 글, 댓글 조회
