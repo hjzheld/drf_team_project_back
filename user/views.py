@@ -7,7 +7,7 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
-from .serializers import UserSerializer, CustomTokenObtainPairSerializer, UserProfileSerializer
+from .serializers import UserSerializer, CustomTokenObtainPairSerializer, UserProfileSerializer, ProfileUpdateSerializer
 from .models import User
 
 # 회원가입
@@ -27,6 +27,7 @@ class UserView(APIView):
     
         else :
             return Response({"message":f"$({serializer.errors})"}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
 #로그인
@@ -34,17 +35,28 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 
-# 본인 프로필, 글, 댓글 조회
+# 프로필, 글, 댓글 조회
 class UserProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, user_id):
-        if request.user.id == user_id:
-            user = User.objects.filter(id=user_id)
-            serializer = UserProfileSerializer(user, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        print(user_id)
+        if request.user.id != user.id:
+            return Response({'message': '권한이 없습니다!'}, status=status.HTTP_403_FORBIDDEN)
+        
+        serializer = ProfileUpdateSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message':'수정완료', 'data':serializer.data}, status=status.HTTP_200_OK)
         else:
-            return Response('권한이 없습니다!', status=status.HTTP_403_FORBIDDEN)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
 
 # 팔로우 
 class FollowView(APIView):
