@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
 from articles.models import Article
+from comment.models import Comment
+from comment.serializers import CommentSerializer
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,12 +16,13 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 
 class ArticleListSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+    comments = CommentSerializer(many=True)
 
     def get_user(self, obj):
-        return obj.user.email
+        return obj.user.nickname
     
     class Meta:
         model = Article
-        fields = ('pk', 'title', 'content', 'image', 'updated_at', 'user')
+        fields = ('pk', 'title', 'content', 'image', 'updated_at', 'user', 'comments')
         
         
