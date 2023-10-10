@@ -3,12 +3,23 @@ from rest_framework import serializers
 from articles.models import Article
 from comment.models import Comment
 from comment.serializers import CommentSerializer
+from tag.models import Tag
 
 class ArticleSerializer(serializers.ModelSerializer):
+    tag = serializers.SerializerMethodField()
     class Meta:
         model = Article
         fields = '__all__'
 
+    def get_tag(self, obj):
+        """ 태그 이름 전달 """
+        tag = obj.tag_id
+        if not tag:
+            tag_name = "#목표따윈없는사람"
+        else:
+            tag_name = tag.tag_name
+        return tag_name
+        
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
@@ -24,5 +35,3 @@ class ArticleListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('pk', 'title', 'content', 'image', 'updated_at', 'user', 'comments', 'tag_id')
-        
-        
