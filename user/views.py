@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from django.shortcuts import get_list_or_404
+from rest_framework.generics import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from articles.models import Article
@@ -37,6 +38,8 @@ class UserView(APIView):
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+
+# 유저 글 조회 
 class UserArticleView(APIView):
     def get(self, request, user_id):
         article = get_list_or_404(Article, user=user_id)
@@ -44,15 +47,17 @@ class UserArticleView(APIView):
         return Response(serializers.data, status=status.HTTP_200_OK)
 
 
-# 프로필, 글, 댓글 조회
+
 class UserProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-
+    
+    # 프로필, 글, 댓글 조회
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
         serializer = UserProfileSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    # 프로필 수정
     def put(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
         print(user_id)
