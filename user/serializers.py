@@ -8,7 +8,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
     followers = serializers.StringRelatedField(many=True)
     followings = serializers.StringRelatedField(many=True)
     
-    
     class Meta:
         model = User
         fields = ['email', 'nickname', 'profile', 'mbti', 'blog', "followings", "followers"]
@@ -26,14 +25,12 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-    
-    # 회원정보 업데이트
-    def update(self, validated_data):
-        user = super().create(validated_data)
-        password = user.password
-        user.set_password(password)
-        user.save()
-        return user
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'nickname', 'profile', 'mbti', 'blog']  
 
 
 # 로그인         
