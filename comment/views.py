@@ -18,26 +18,26 @@ class CommentView(APIView):
         serializer = CommentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(article_id=article)
-        return Response(serializer.data)
+        return Response({"message":"저장되었습니다."}, status=status.HTTP_201_CREATED)
     
     def put(self, request, article_id, pk):
         """ 특정 댓글 수정 """
         try:
             comment = Comment.objects.get(pk=pk, user_id=request.user.pk)
         except ObjectDoesNotExist:
-            return Response({"message":"수정할 수 없습니다."})
+            return Response({"message":"수정할 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = CommentSerializer(comment, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response({"message":"수정되었습니다."}, status=status.HTTP_200_OK)
     
     def delete(self, request, article_id, pk):
         """ 특정 댓글 삭제 """
         try:
             comment = Comment.objects.get(pk=pk, user_id=request.user.pk)
         except ObjectDoesNotExist:
-            return Response({"message":"삭제할 수 없습니다."})
+            return Response({"message":"삭제할 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
         comment.delete()
 
-        return Response({"message":"삭제되었습니다."})
+        return Response({"message":"삭제되었습니다."}, status=status.HTTP_200_OK)
