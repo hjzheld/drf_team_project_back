@@ -1,6 +1,7 @@
 from django.db import models
 from user.models import User
 from tag.models import Tag
+from comment.models import Comment
 
 
 
@@ -14,7 +15,7 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True, blank=True)
 
 def __str__(self):
     return str(self.title)
