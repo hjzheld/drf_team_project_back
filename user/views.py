@@ -1,5 +1,10 @@
 from rest_framework.views import APIView
+<<<<<<< HEAD
 from django.shortcuts import get_list_or_404, get_object_or_404
+=======
+from django.shortcuts import get_list_or_404
+from rest_framework.generics import get_object_or_404
+>>>>>>> 710a7ca87c240a10651c5031a2b9fa9148c9452b
 from rest_framework import status
 from rest_framework.response import Response
 from articles.models import Article
@@ -10,7 +15,7 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
-from .serializers import UserSerializer, CustomTokenObtainPairSerializer, UserProfileSerializer
+from .serializers import UserSerializer, CustomTokenObtainPairSerializer, UserProfileSerializer, ProfileUpdateSerializer
 from .models import User
 
 # 회원가입
@@ -30,12 +35,15 @@ class UserView(APIView):
     
         else :
             return Response({"message":f"$({serializer.errors})"}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
 #로그인
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+
+# 유저 글 조회 
 class UserArticleView(APIView):
     def get(self, request, user_id):
         article = get_list_or_404(Article, user=user_id)
@@ -43,17 +51,30 @@ class UserArticleView(APIView):
         return Response(serializers.data, status=status.HTTP_200_OK)
 
 
-# 본인 프로필, 글, 댓글 조회
+
 class UserProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-
+    
+    # 프로필, 글, 댓글 조회
     def get(self, request, user_id):
-        if request.user.id == user_id:
-            user = User.objects.filter(id=user_id)
-            serializer = UserProfileSerializer(user, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    # 프로필 수정
+    def put(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        print(user_id)
+        if request.user.id != user.id:
+            return Response({'message': '권한이 없습니다!'}, status=status.HTTP_403_FORBIDDEN)
+        
+        serializer = ProfileUpdateSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message':'수정완료', 'data':serializer.data}, status=status.HTTP_200_OK)
         else:
-            return Response('권한이 없습니다!', status=status.HTTP_403_FORBIDDEN)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
 
 # 팔로우 
 class FollowView(APIView):

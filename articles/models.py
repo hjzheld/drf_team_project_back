@@ -1,5 +1,6 @@
 from django.db import models
 from user.models import User
+from tag.models import Tag
 
 
 
@@ -12,6 +13,9 @@ class Article(models.Model):
     image = models.ImageField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    likes = models.ManyToManyField(User, related_name="like_articles")
+    
+    tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True, blank=True)
 
-def __str__(self):
-    return str(self.title)
+    def __str__(self):
+        return str(self.title)
