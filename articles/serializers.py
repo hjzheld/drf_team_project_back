@@ -8,6 +8,7 @@ from tag.models import Tag
 class ArticleSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
+    profile = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
     class Meta:
         model = Article
@@ -36,6 +37,7 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 class ArticleListSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
+    profile = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
     
     class Meta:
