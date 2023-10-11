@@ -6,8 +6,9 @@ from rest_framework.generics import get_object_or_404
 
 from .models import Tag
 from user.models import User
+from articles.models import Article
 
-from .serializers import TagSerializer,TagCalSerializer
+from .serializers import TagSerializer
 
 
 class TagView(APIView):
@@ -56,8 +57,10 @@ class TagCalView(APIView):
     def get(self, request, nickname):
         """ 유저의 목표태그와 달성률 요청 """
         user = User.objects.get(nickname=nickname)
-        tag = user.tag_ids
-
-        serializers = TagCalSerializer(tag, many=True)
-
-        return Response(serializers.data, status=status.HTTP_200_OK)
+        tags = user.tag_ids.all()
+        tag_data =[]
+        for i in tags:
+            tag_articles = Article.objects.filter(tag_id=i.id, user_id=user.pk)
+            tag_data.append({i.id: i.tag_name,
+                             "tag_articles": len(tag_articles)})
+        return Response(tag_data, status=status.HTTP_200_OK)
