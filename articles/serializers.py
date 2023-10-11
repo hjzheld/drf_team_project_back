@@ -8,7 +8,7 @@ from tag.models import Tag
 class ArticleSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
-    # profile = serializers.SerializerMethodField(blank=True)
+    # profile = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
     class Meta:
         model = Article
