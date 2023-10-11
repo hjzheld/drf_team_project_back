@@ -12,6 +12,12 @@ from .serializers import TagSerializer
 class TagView(APIView):
     def post(self, request):
         """ 목표를 직접 생성 """
+
+        # 중복 체크
+        tag_names = Tag.objects.filter(tag_name=request.data["tag_name"])
+        if tag_names:
+            return Response({"message":"이미 존재하는 목표이름 입니다."}, status=status.HTTP_409_CONFLICT)
+        
         serializer = TagSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -44,3 +50,9 @@ class TagView(APIView):
             tag_data.append({i.id: i.tag_name})
 
         return Response(tag_data, status=status.HTTP_200_OK)
+    
+
+class TagCalView(APIView):
+    def get(self, request, nickname):
+        tags = Tag.objects.all()
+        return Response()
