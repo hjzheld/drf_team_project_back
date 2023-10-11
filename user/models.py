@@ -50,7 +50,10 @@ class User(AbstractBaseUser):
     nickname = models.CharField(max_length=100, unique=True)
     mbti = models.CharField(max_length=100, null=True, blank=True)
     blog = models.CharField(max_length=100, null=True, blank=True)
-    profile = models.ImageField(blank=True, upload_to='%Y/%m/')
+    profile = models.ImageField(
+        blank=True, 
+        upload_to='uploads/profiles/',
+        default = 'default_profile.png' )
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
