@@ -13,7 +13,7 @@ class Article(models.Model):
     image = models.ImageField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    likes = models.ManyToManyField(User, related_name="like_articles")
+    likes = models.ManyToManyField(User, related_name="like_articles", blank=True)
     
     tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True, blank=True)
 

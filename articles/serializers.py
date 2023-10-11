@@ -8,7 +8,7 @@ from tag.models import Tag
 class ArticleSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
-    profile = serializers.SerializerMethodField()
+    # profile = serializers.SerializerMethodField(blank=True)
     comments = CommentSerializer(many=True)
     class Meta:
         model = Article
@@ -26,8 +26,8 @@ class ArticleSerializer(serializers.ModelSerializer):
     def get_nickname(self, obj):
         return obj.user.nickname
     
-    def get_profile(self, obj):
-        return obj.user.profile
+    # def get_profile(self, obj):
+    #     return obj.user.profile
         
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,7 +37,7 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 class ArticleListSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
-    profile = serializers.SerializerMethodField()
+    # profile = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
     
     class Meta:
@@ -56,5 +56,5 @@ class ArticleListSerializer(serializers.ModelSerializer):
     def get_nickname(self, obj):
         return obj.user.nickname
     
-    def get_profile(self, obj):
-        return obj.user.profile
+    # def get_profile(self, obj):
+    #     return obj.user.profile
