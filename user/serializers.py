@@ -11,10 +11,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
     followings = serializers.StringRelatedField(many=True)
     article_set = ArticleListSerializer(many=True)
     comments = CommentSerializer(many=True)
+    like_articles = ArticleListSerializer(many=True)
     
     class Meta:
         model = User
-        fields = ['email', 'nickname', 'profile', 'mbti', 'blog', "followings", "followers", "article_set", "comments"]
+        fields = ['email', 'nickname', 'profile', 'mbti', 'blog', "followings", "followers", "article_set", "comments", "like_articles"]
 
 
 class UserSerializer(serializers.ModelSerializer):
