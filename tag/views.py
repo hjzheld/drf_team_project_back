@@ -39,8 +39,8 @@ class TagView(APIView):
     def get(self, request):
         """ tag 조회 요청 """
         tags = Tag.objects.all()
-        tag_data = {}
+        tag_data =[]
         for i in tags:
-            tag_data[i.id] = i.tag_name
+            tag_data.append({i.id: i.tag_name})
 
         return Response(tag_data, status=status.HTTP_200_OK)
