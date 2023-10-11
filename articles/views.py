@@ -9,10 +9,8 @@ from user.models import User
 
 class ArticleView(APIView):
     def get(self, request):
-
         article = Article.objects.all()
         serializers = ArticleSerializer(article, many=True)
-
         return Response(serializers.data, status=status.HTTP_200_OK)
     
     def post(self, request):
@@ -25,6 +23,7 @@ class ArticleView(APIView):
             return Response({'message':'등록되었습니다.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ArticleDetailView(APIView):
     def get(self, request, article_id):
@@ -40,9 +39,8 @@ class ArticleDetailView(APIView):
                 serializer.save()
             return Response({'message':'수정 되었습니다.'}, status=status.HTTP_200_OK)
         else:
-            return Response({'message':'권한이 없습니다.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'message':'권한이 없습니다.'}, status=status.HTTP_401_UNAUTHORIZED) 
 
-        
 
     def delete(self, request, article_id):
         article = get_object_or_404(Article, id=article_id)
