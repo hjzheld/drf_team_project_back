@@ -37,7 +37,7 @@ class ArticleListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Article
-        fields = ('pk', 'title', 'content', 'image', 'updated_at', 'user', 'comments', 'tag_id')
+        fields = '__all__'
 
     def get_tag(self, obj):
         """ 태그 이름 전달 """
