@@ -24,6 +24,9 @@ class ArticleSerializer(serializers.ModelSerializer):
     
     def get_nickname(self, obj):
         return obj.user.nickname
+    
+    def get_profile(self, obj):
+        return obj.user.profile
         
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,3 +53,6 @@ class ArticleListSerializer(serializers.ModelSerializer):
     
     def get_nickname(self, obj):
         return obj.user.nickname
+    
+    def get_profile(self, obj):
+        return obj.user.profile
