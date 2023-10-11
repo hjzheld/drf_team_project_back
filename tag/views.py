@@ -35,3 +35,12 @@ class TagView(APIView):
 
 
             return Response({"message":"성공."}, status=status.HTTP_200_OK)
+    
+    def get(self, request):
+        """ tag 조회 요청 """
+        tags = Tag.objects.all()
+        tag_data = {}
+        for i in tags:
+            tag_data[i.id] = i.tag_name
+
+        return Response(tag_data, status=status.HTTP_200_OK)
