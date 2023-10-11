@@ -4,11 +4,12 @@ from articles.models import Article
 from comment.models import Comment
 from comment.serializers import CommentSerializer
 from tag.models import Tag
+from django.conf import settings
 
 class ArticleSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
-    # profile = serializers.SerializerMethodField(blank=True)
+    profile = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
     class Meta:
         model = Article
@@ -26,8 +27,12 @@ class ArticleSerializer(serializers.ModelSerializer):
     def get_nickname(self, obj):
         return obj.user.nickname
     
-    # def get_profile(self, obj):
-    #     return obj.user.profile
+    def get_profile(self, obj):
+        if obj.user.profile:
+            profile_url = settings.MEDIA_URL + str(obj.user.profile)
+            return profile_url
+        else:
+            return 'user/profile/default_profile.png'
         
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,7 +42,7 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 class ArticleListSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
-    # profile = serializers.SerializerMethodField()
+    profile = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
     
     class Meta:
@@ -56,5 +61,9 @@ class ArticleListSerializer(serializers.ModelSerializer):
     def get_nickname(self, obj):
         return obj.user.nickname
     
-    # def get_profile(self, obj):
-    #     return obj.user.profile
+    def get_profile(self, obj):
+        if obj.user.profile:
+            profile_url = settings.MEDIA_URL + str(obj.user.profile)
+            return profile_url
+        else:
+            return 'user/profile/default_profile.png'
