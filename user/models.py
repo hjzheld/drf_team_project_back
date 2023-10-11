@@ -53,7 +53,7 @@ class User(AbstractBaseUser):
     profile = models.ImageField(
         blank=True, 
         upload_to='uploads/profiles/',
-        default = 'default_profile.png' )
+        default = 'default_profile.png')
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
