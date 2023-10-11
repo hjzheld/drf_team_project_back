@@ -1,10 +1,7 @@
 from rest_framework.views import APIView
-<<<<<<< HEAD
-from django.shortcuts import get_list_or_404, get_object_or_404
-=======
+
 from django.shortcuts import get_list_or_404
 from rest_framework.generics import get_object_or_404
->>>>>>> 710a7ca87c240a10651c5031a2b9fa9148c9452b
 from rest_framework import status
 from rest_framework.response import Response
 from articles.models import Article
