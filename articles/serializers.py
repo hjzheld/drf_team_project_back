@@ -12,7 +12,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True)
     class Meta:
         model = Article
-        fields = ('pk', 'title', 'content', 'image', 'updated_at', 'user', 'comments')
+        fields = '__all__'
 
     def get_tag(self, obj):
         """ 태그 이름 전달 """
