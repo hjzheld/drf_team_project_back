@@ -2,11 +2,12 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.generics import get_object_or_404
 
 from .models import Tag
 from user.models import User
 
-from .serializers import TagSerializer
+from .serializers import TagSerializer,TagCalSerializer
 
 
 class TagView(APIView):
@@ -29,7 +30,6 @@ class TagView(APIView):
     def put(self, request, pk):
         """ 이미 있는 목표를 설정 """
         user = User.objects.get(pk=request.user.pk)
-        print(user)
         if user.tag_ids == pk:
             return Response({"message":"이미 설정된 목표입니다."}, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -54,5 +54,10 @@ class TagView(APIView):
 
 class TagCalView(APIView):
     def get(self, request, nickname):
-        tags = Tag.objects.all()
-        return Response()
+        """ 유저의 목표태그와 달성률 요청 """
+        user = User.objects.get(nickname=nickname)
+        tag = user.tag_ids
+
+        serializers = TagCalSerializer(tag, many=True)
+
+        return Response(serializers.data, status=status.HTTP_200_OK)
