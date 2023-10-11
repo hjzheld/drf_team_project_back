@@ -11,6 +11,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
     profile = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
+    
     class Meta:
         model = Article
         fields = '__all__'
