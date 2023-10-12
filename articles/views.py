@@ -15,12 +15,12 @@ class ArticleView(APIView):
     
     def post(self, request):
         if not request.user.is_authenticated:
-            return Response({'message':'다시 로그인 해주세요.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'message':'로그인 해주세요.'}, status=status.HTTP_401_UNAUTHORIZED)
    
         serializer = ArticleCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
-            return Response({'message':'등록되었습니다.'}, status=status.HTTP_200_OK)
+            return Response({'message':'등록 되었습니다.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -46,7 +46,7 @@ class ArticleDetailView(APIView):
         article = get_object_or_404(Article, id=article_id)
         if request.user == article.user:
             article.delete()
-            return Response({'message':'삭제가 완료되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
+            return Response({'message':'삭제 되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({'message':'권한이 없습니다.'}, status=status.HTTP_401_UNAUTHORIZED)
 
