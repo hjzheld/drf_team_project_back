@@ -33,7 +33,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             profile_url = settings.MEDIA_URL + str(obj.user.profile)
             return profile_url
         else:
-            return 'user/profile/default_profile.png'
+            return 'uploads/profiles/default_profile.png'
         
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,4 +67,4 @@ class ArticleListSerializer(serializers.ModelSerializer):
             profile_url = settings.MEDIA_URL + str(obj.user.profile)
             return profile_url
         else:
-            return 'user/profile/default_profile.png'
+            return 'uploads/profiles/default_profile.png'
