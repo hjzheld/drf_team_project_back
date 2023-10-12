@@ -15,7 +15,7 @@ class ArticleView(APIView):
     
     def post(self, request):
         if not request.user.is_authenticated:
-            return Response({'message':'다시 로그인 해주세요.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'message':'로그인 해주세요.'}, status=status.HTTP_401_UNAUTHORIZED)
    
         serializer = ArticleCreateSerializer(data=request.data)
         if serializer.is_valid():
