@@ -149,11 +149,5 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = BASE_DIR/"media"
 MEDIA_URL = "/media/"
 
-STATIC_ROOT = BASE_DIR / 'static'
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
-
 
 CORS_ALLOW_ALL_ORIGINS = True
