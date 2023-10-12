@@ -61,6 +61,6 @@ class TagCalView(APIView):
         tag_data =[]
         for i in tags:
             tag_articles = Article.objects.filter(tag_id=i.id, user_id=user.pk)
-            tag_data.append({i.id: i.tag_name,
+            tag_data.append({"tag_name": i.tag_name,
                              "tag_articles": len(tag_articles)})
         return Response(tag_data, status=status.HTTP_200_OK)
